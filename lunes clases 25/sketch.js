@@ -1,0 +1,96 @@
+
+            var valor = document.getElementById("pecinco").offsetWidth;
+
+            window.addEventListener("resize", function () {
+                valor = document.getElementById("pecinco").offsetWidth;
+            });
+
+           //de aca 
+            
+            // Click and drag the mouse to view the scene from different angles.
+
+let button;
+let particles;
+
+function setup() {
+  createCanvas(valor, valor, WEBGL);
+
+  // Create a button to reset the particle system.
+  button = createButton('Reset');
+
+  // Call resetModel() when the user presses the button.
+  button.mousePressed(resetModel);
+
+  // Add the original set of particles.
+  resetModel();
+}
+
+function draw() {
+  background(106, 138, 198, 0.71);
+
+  // Enable orbiting with the mouse.
+  orbitControl();
+     // Turn on an ambient light.
+  ambientLight(200);
+
+  // Get the mouse's coordinates.
+  let mx = mouseX - 50;
+  let my = mouseY - 50;
+
+  // Turn on a white point light that follows the mouse.
+  pointLight(255, 0, 219, mx, my, 50);
+
+  // Style the spheres.
+  noStroke();
+  fill(30, 30, 255);
+  specularMaterial(255);
+  shininess(20);
+
+  // Turn on the lights.
+  lights();
+
+  // Style the particles.
+  noStroke();
+
+  // Draw the particles.
+  model(particles);
+    
+      // Draw the right sphere with high metalness.
+  translate(50, 0, 0);
+  metalness(50);
+  sphere(20);
+
+}
+
+function resetModel() {
+  // If the p5.Geometry object has already been created,
+  // free those resources.
+  if (particles) {
+    freeGeometry(particles);
+  }
+
+  // Create a new p5.Geometry object with random spheres.
+  particles = buildGeometry(createParticles);
+}
+
+function createParticles() {
+  for (let i = 0; i < 60; i += 1) {
+    // Calculate random coordinates.
+    let x = randomGaussian(0, 20);
+    let y = randomGaussian(0, 20);
+    let z = randomGaussian(0, 20);
+
+    push();
+    // Translate to the particle's coordinates.
+    translate(x, y, z);
+    // Draw the particle.
+    sphere(5);
+    pop();
+  }
+}
+            
+            //hasta aca
+
+            function windowResized() {
+                resizeCanvas(valor, valor);
+            }
